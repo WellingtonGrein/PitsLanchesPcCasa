@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  pitslanches-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pitslanches-app
+    ports:
+        - "8000:80"
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=pitslanches-db;Database=LanchesDatabase;User Id=sa;Password=${DB_PASSWORD};TrustServerCertificate=True
+    depends_on:
+      - pitslanches-db 
+  pitslanches-db:
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    container_name: pitslanches-db
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "1433:1433"
