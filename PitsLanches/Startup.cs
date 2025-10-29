@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PitsLanches.Context;
+using PitsLanches.Repositories;
+using PitsLanches.Repositories.Interfaces;
 
 namespace PitsLanches;
 
@@ -17,6 +19,9 @@ public class Startup
     {
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+        services.AddTransient<ILancheRepository, LancheRepository>();
+        services.AddTransient<ICategoriaRepository, CategoriaRepository>();
 
         services.AddControllersWithViews();
     }

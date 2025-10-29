@@ -9,9 +9,9 @@ namespace PitsLanches.Models
         [Key]
         public int CategoriaId { get; set; }
 
-        [StringLength(100,ErrorMessage ="O tamanho maximo e 100 caracteres")]
-        [Required(ErrorMessage =("Informe o nome da categoria"))]
         [Display(Name ="Nome")]
+        [Required(ErrorMessage =("Informe o {0} da categoria"))]
+        [StringLength(100,ErrorMessage ="{0} maximo de 100 caracteres")]
         public string CategoriaNome { get; set; }
 
         [StringLength(200, ErrorMessage = "O tamanho maximo e 200 caracteres")]

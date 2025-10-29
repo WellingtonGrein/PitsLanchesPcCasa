@@ -8,6 +8,7 @@ namespace PitsLanches.Controllers
     {      
         public IActionResult Index()
         {
+            TempData["Nome"] = "Well";
             return View();
         }
       
