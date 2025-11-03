@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PitsLanches.Models;
 using PitsLanches.Repositories.Interfaces;
 using PitsLanches.ViewModels;
 
@@ -12,15 +13,33 @@ namespace PitsLanches.Controllers
             _lancheRepository = lancheRepository;
         }
 
-        public IActionResult List()
+        public IActionResult List(string categoria)
         {
-            //var lanches = _lancheRepository.Lanches;
-            //return View(lanches);
+            IEnumerable<Lanche> lanches;
+            string categoriaAtual = string.Empty;
 
-            var lancheListViewModel = new LancheListViewModel();
-            lancheListViewModel.Lanches = _lancheRepository.Lanches;
-            lancheListViewModel.CategoriaAtual = "Categoria Atual";
+            if (string.IsNullOrEmpty(categoria))
+            {
+                lanches = _lancheRepository.Lanches.OrderBy(m => m.LancheId);
+            }
+            else
+            {
+                lanches = _lancheRepository.Lanches.Where(m => m.Categoria.CategoriaNome.Equals(categoria)).OrderBy(m => m.Nome);
+                categoriaAtual = categoria;
+            }
+            var lancheListViewModel = new LancheListViewModel
+            {
+                Lanches = lanches,
+                CategoriaAtual = categoriaAtual,
+            };
+
             return View(lancheListViewModel);
+        }
+
+        public IActionResult Details(int lancheId)
+        {
+            var lanche = _lancheRepository.Lanches.FirstOrDefault(m => m.LancheId == lancheId);
+            return View(lanche);
         }
     }
 }
