@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using PitsLanches.Context;
 using PitsLanches.Models;
 using PitsLanches.Repositories;
@@ -21,8 +22,12 @@ public class Startup
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+        services.AddIdentity<IdentityUser,  IdentityRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+
         services.AddTransient<ILancheRepository, LancheRepository>();
         services.AddTransient<ICategoriaRepository, CategoriaRepository>();
+        services.AddTransient<IPedidoRepository, PedidoRepository>();
+
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddScoped(sp => CarrinhoCompra.GetCarrinho(sp));
         services.AddControllersWithViews();
@@ -50,6 +55,7 @@ public class Startup
 
         app.UseRouting();
         app.UseSession();
+        app.UseAuthentication();
 
         app.UseAuthorization();
 
@@ -66,4 +72,3 @@ public class Startup
         });
     }
 }
-

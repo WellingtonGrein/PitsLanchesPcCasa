@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PitsLanches.Models;
 using PitsLanches.Repositories.Interfaces;
 using PitsLanches.ViewModels;
@@ -30,6 +31,7 @@ namespace PitsLanches.Controllers
             return View(carrinhoCompraVm);
         }
 
+        [Authorize]
         public RedirectToActionResult AdicionarItemNoCarrinhoCompra(int lancheId)
         {
             var lancheSelecionado = _lancherepository.Lanches.FirstOrDefault(m => m.LancheId == lancheId);
@@ -42,6 +44,7 @@ namespace PitsLanches.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         public IActionResult RemovrItemDoCarrinhoCompra(int lancheId)
         {
             var lancheSelecionado = _lancherepository.Lanches.FirstOrDefault(m => m.LancheId == lancheId);
