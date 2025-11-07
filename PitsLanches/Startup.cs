@@ -4,6 +4,7 @@ using PitsLanches.Context;
 using PitsLanches.Models;
 using PitsLanches.Repositories;
 using PitsLanches.Repositories.Interfaces;
+using PitsLanches.Services;
 
 namespace PitsLanches;
 
@@ -22,11 +23,21 @@ public class Startup
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-        services.AddIdentity<IdentityUser,  IdentityRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+        services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
         services.AddTransient<ILancheRepository, LancheRepository>();
         services.AddTransient<ICategoriaRepository, CategoriaRepository>();
         services.AddTransient<IPedidoRepository, PedidoRepository>();
+        services.AddScoped<ISeedUserRoleInitial, SeedUserRoleInitial>();
+
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("Admin",
+                politica =>
+                {
+                    politica.RequireRole("Admin");
+                });
+        });
 
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddScoped(sp => CarrinhoCompra.GetCarrinho(sp));
@@ -37,7 +48,7 @@ public class Startup
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppDbContext context)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppDbContext context, ISeedUserRoleInitial seedUserRoleInitial)
     {
         context.Database.Migrate();
         if (env.IsDevelopment())
@@ -54,6 +65,10 @@ public class Startup
         app.UseStaticFiles();
 
         app.UseRouting();
+
+        seedUserRoleInitial.SeedRoles();
+        seedUserRoleInitial.SeedUsers();
+
         app.UseSession();
         app.UseAuthentication();
 
@@ -61,6 +76,10 @@ public class Startup
 
         app.UseEndpoints(endpoints =>
         {
+          endpoints.MapControllerRoute(
+          name: "areas",
+          pattern: "{area:exists}/{controller=Admin}/{action=Index}/{id?}" );
+
             endpoints.MapControllerRoute(
                 name: "cateoriaFiltro",
                 pattern: "Lanche/{action}/{categoria?}",
