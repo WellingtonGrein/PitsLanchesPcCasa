@@ -1,8 +1,10 @@
-﻿using PitsLanches.Context;
-using PitsLanches.Models;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PitsLanches.Context;
+using PitsLanches.Models;
+using PitsLanches.ViewModels;
+using ReflectionIT.Mvc.Paging;
 
 namespace PitsLanches.Areas.Admin.Controllers
 {
@@ -17,10 +19,40 @@ namespace PitsLanches.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: Admin/AdminPedidos
-        public async Task<IActionResult> Index()
+        public IActionResult PedidoLanches(int? id)
         {
-            return View(await _context.Pedidos.ToListAsync());
+            var pedido = _context.Pedidos
+                         .Include(m => m.PedidoItens)
+                         .ThenInclude(m => m.Lanche)
+                         .FirstOrDefault(m => m.PedidoId == id);
+
+            if (pedido == null)
+            {
+                Response.StatusCode = 404;
+                return View("PedidoNotFound", id.Value);
+            }
+
+            PedidoLancheViewModel pedidoLanches = new PedidoLancheViewModel()
+            {
+                Pedido = pedido,
+                PedidoDetalhes = pedido.PedidoItens
+            };
+            return View(pedidoLanches);
+        }
+
+        public async Task<IActionResult> Index(string filter, int pageindex = 1, string sort = "Nome")
+        {
+            var resultado = _context.Pedidos.AsNoTracking().
+                                        AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(filter))
+            {
+                resultado = resultado.Where(m => m.Nome.Contains(filter));
+            }
+
+            var model = await PagingList.CreateAsync(resultado, 5, pageindex, sort, "Nome");
+            model.RouteValue = new RouteValueDictionary { { "filter", filter } };
+            return View(model);
         }
 
         // GET: Admin/AdminPedidos/Details/5

@@ -1,69 +1,85 @@
 ﻿@model Pedido
 
-<h3>Você esta a um passo de completar o seu pedido</h3>
-<hr />
-<form asp-action="Checkout" method="post" class="form-horizontal" role="form">
-    <div class="row">
-        <div class="form-group col-md-6">
-            <label asp-for="Nome" class="control-label"></label>
-            <input asp-for="Nome" class="form-control" />
-            <span asp-validation-for="Nome" class="text-danger"></span>
-        </div>
-        <div class="form-group col-md-6">
-            <label asp-for="Sobrenome" class="control-label"></label>
-            <input asp-for="Sobrenome" class="form-control" />
-            <span asp-validation-for="Sobrenome" class="text-danger"></span>
-        </div>
+<div class="secao-destaque" style="padding: 2rem 0;">
+    <div class="container text-center">
+        <h2 class="titulo-secao" style="font-size: 2.5rem;">Finalizar Pedido</h2>
+        <div class="divisor-titulo"></div>
     </div>
-    <div class="row">
-        <div class="form-group col-md-6">
-            <label asp-for="Endereco1" class="control-label"></label>
-            <input asp-for="Endereco1" class="form-control" />
-            <span asp-validation-for="Endereco1" class="text-danger"></span>
+</div>
+
+<div class="container my-5">
+    <form asp-action="Checkout" method="post" role="form">
+        <div class="checkout-container">
+            <div class="checkout-form">
+                <div class="form-section">
+                    <h4 class="form-section-title">Endereço de Entrega</h4>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Nome" class="form-label"></label>
+                            <input asp-for="Nome" class="form-control" />
+                            <span asp-validation-for="Nome" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Sobrenome" class="form-label"></label>
+                            <input asp-for="Sobrenome" class="form-control" />
+                            <span asp-validation-for="Sobrenome" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Endereco1" class="form-label"></label>
+                        <input asp-for="Endereco1" class="form-control" placeholder="Rua, Avenida, etc." />
+                        <span asp-validation-for="Endereco1" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Endereco2" class="form-label"></label>
+                        <input asp-for="Endereco2" class="form-control" placeholder="Apartamento, casa, etc. (opcional)" />
+                        <span asp-validation-for="Endereco2" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="Cep" class="form-label"></label>
+                            <input asp-for="Cep" class="form-control" />
+                            <span asp-validation-for="Cep" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="Cidade" class="form-label"></label>
+                            <input asp-for="Cidade" class="form-control" value="Joinville" />
+                            <span asp-validation-for="Cidade" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="Estado" class="form-label"></label>
+                            <input asp-for="Estado" class="form-control" value="SC" />
+                            <span asp-validation-for="Estado" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <h4 class="form-section-title">Informações de Contato</h4>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Telefone" class="form-label"></label>
+                            <input asp-for="Telefone" class="form-control" />
+                            <span asp-validation-for="Telefone" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div asp-validation-summary="All" class="text-danger"></div>
+            </div>
+            <div class="carrinho-resumo">
+                <h4>Resumo da Compra</h4>
+                <hr />
+                <p class="text-muted small">Confira seus dados e clique no botão abaixo para finalizar a sua compra.</p>
+                <div class="d-grid gap-2 mt-4">
+                    <input class="btn btn-success btn-lg" type="submit" value="Concluir Pedido" />
+                    <a class="btn btn-outline-secondary" asp-controller="CarrinhoCompra" asp-action="Index">Retornar ao Carrinho</a>
+                </div>
+            </div>
+
         </div>
-        <div class="form-group col-md-6">
-            <label asp-for="Endereco2" class="control-label"></label>
-            <input asp-for="Endereco2" class="form-control" />
-            <span asp-validation-for="Endereco2" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="row">
-        <div class="form-group col-md-4">
-            <label asp-for="Cep" class="control-label"></label>
-            <input asp-for="Cep" class="form-control" />
-            <span asp-validation-for="Cep" class="text-danger"></span>
-        </div>
-        <div class="form-group col-md-4">
-            <label asp-for="Cidade" class="control-label"></label>
-            <input asp-for="Cidade" class="form-control" value="Joinville" />
-            <span asp-validation-for="Cidade" class="text-danger"></span>
-        </div>
-        <div class="form-group col-md-4">
-            <label asp-for="Estado" class="control-label"></label>
-            <input asp-for="Estado" class="form-control" value="SC" />
-            <span asp-validation-for="Estado" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="row">
-        <div class="form-group col-md-6">
-            <label asp-for="Telefone" class="control-label"></label>
-            <input asp-for="Telefone" class="form-control" />
-            <span asp-validation-for="Telefone" class="text-danger"></span>
-        </div>
-        <div class="form-group col-md-6">
-            <label asp-for="Email" class="control-label"></label>
-            <input asp-for="Email" class="form-control" />
-            <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
-    </div>
-    <br />
-    <div class="row">
-        <div class="form-group col-md-3">
-            <input class="btn btn-success" type="submit" value="Concluir Pedido" />
-        </div>
-        &nbsp;
-        <div class="form-group col-md-3">
-            <a class="btn btn-outline-info" asp-controller="CarrinhoCompra" asp-action="Index">Retornar ao Carrinho</a>
-        </div>
-    </div>
-</form>
+    </form>
+</div>

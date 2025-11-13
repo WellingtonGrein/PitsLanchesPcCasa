@@ -1,13 +1,26 @@
 ﻿@model HomeViewModel
 
-<partial name="_Carousel"/>
+<partial name="_Carousel" />
 
-<h2>Os preferidos da semana</h2>
-<h4>Ta com fome?</h4>
+<section class="secao-destaque">
+    <div class="container">
 
-<div class="row">
-    @foreach (var lanche in Model.LanchesPreferidos)
-    {
-        <partial name="_LanchesResumo" for="@lanche" />
-    }
-</div>
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="titulo-secao">As Estrelas da Casa</h2>
+                <div class="divisor-titulo"></div>
+                <p class="subtitulo-secao">
+                    Estes não são apenas lanches, são uma experiência. Criados com os melhores ingredientes, eles são os mais pedidos por um motivo. Descubra o seu preferido!
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            @foreach (var lanche in Model.LanchesPreferidos)
+            {
+                <partial name="_LanchesResumo" for="@lanche" />
+            }
+        </div>
+
+    </div>
+</section>

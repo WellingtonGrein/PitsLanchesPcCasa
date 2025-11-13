@@ -1,41 +1,49 @@
 ﻿@model Pedido
 
-<div class="container">
+<div class="container my-5">
+    <div class="pedido-confirmacao-card">
 
-    <div class="jumbotron">
-        <h2>@ViewBag.CheckoutCompletoMensagem</h2>
-    </div>
-
-    <div class="card">
-        <div class="card-body">
-            <p>Cliente : <strong>@Model.Nome</strong>
-            <p>Data do Pedido :  <strong>@Model.PedidoEnviado</strong>
-            <p>Número do Pedido   : <strong>@Model.PedidoId</strong></p>
-
-            <table class="table">
-                <tr>
-                    <th></th>
-                    <th>Quantidade</th>
-                    <th>Lanche</th>
-                    <th>Preço</th>
-                </tr>
-                @foreach (var item in Model.PedidoItens)
-                {
-                    <tr>
-                        <td><img src="@item.Lanche.ImagemURL" width="40" height="40" /></td>
-                        <td>@item.Quantidade</td>
-                        <td>@item.Lanche.Nome</td>
-                        <td>@item.Lanche.Preco</td>
-                    </tr>
-                }
-            </table>
-
-            <h4>Valor Total do Pedido: <strong>@(((decimal)ViewBag.TotalPedido).ToString("C2"))</strong></h4>
+        <div class="confirmacao-icon">
+            <i class="bi bi-check-circle-fill"></i>
         </div>
+
+        <h2 class="confirmacao-mensagem">@ViewBag.CheckoutCompletoMensagem</h2>
+
+        <div class="pedido-info-bloco">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-1"><strong>Cliente:</strong> @Model.Nome</p>
+                    <p class="mb-0"><strong>Data:</strong> @Model.PedidoEnviado.ToString("dd/MM/yyyy HH:mm")</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="mb-0"><strong>Número do Pedido:</strong> #@Model.PedidoId</p>
+                </div>
+            </div>
+        </div>
+
+        <h4 class="text-left mb-3">Resumo dos Itens</h4>
+
+        @foreach (var item in Model.PedidoItens)
+        {
+            <div class="pedido-item-resumo">
+                <img src="@item.Lanche.ImagemURL" width="50" height="50" />
+                <div class="info">
+                    <strong>@item.Lanche.Nome</strong>
+                    <div class="text-muted small">Quantidade: @item.Quantidade</div>
+                </div>
+                <div class="preco">
+                    @item.Lanche.Preco.ToString("c")
+                </div>
+            </div>
+        }
+
+        <div class="pedido-total-final">
+            Valor Total: <span>@(((decimal)ViewBag.TotalPedido).ToString("C2"))</span>
+        </div>
+
+        <hr class="my-4">
+
+        <a class="btn btn-primary btn-lg" asp-controller="Home" asp-action="Index">Voltar à Página Inicial</a>
+
     </div>
-</div>
-<div class="form-group" style="text-align :center">
-    <h3>
-        <a class="nav-link text-info" asp-controller="Home" asp-action="Index">Retornar</a>
-    </h3>
 </div>

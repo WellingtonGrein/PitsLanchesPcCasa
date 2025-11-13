@@ -1,23 +1,34 @@
 ﻿@model LancheListViewModel
 
-<style>
-    .lanche-img {
-        width: 225px !important;
-        height: 225px !important;
-        object-fit: cover !important;
-    }
-</style>
-
-<div>
-    <h2>@Model.CategoriaAtual</h2>
+<div class="categoria-header">
+    <div class="container">
+        <h1 class="categoria-titulo">
+            @(string.IsNullOrEmpty(Model.CategoriaAtual) ? "Nosso Cardápio" : Model.CategoriaAtual)
+        </h1>
+    </div>
 </div>
 
-<div class="container">
-    <div class="row">
-
-        @foreach (var lanche in Model.Lanches)
-        {
-          <partial name="_LanchesResumo" for="@lanche"/>
-        }
-    </div>
+<div class="container my-5">
+    @if (Model.Lanches.Any())
+    {
+        <div class="row">
+            @foreach (var lanche in Model.Lanches)
+            {
+                <partial name="_LanchesResumo" for="@lanche" />
+            }
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="no-lanches-aviso">
+                    <i class="bi bi-emoji-frown"></i>
+                    <h4>Ops! Nenhum lanche encontrado.</h4>
+                    <p class="text-muted">Parece que não temos lanches nesta categoria no momento. Que tal explorar outras delícias?</p>
+                    <a class="btn btn-primary mt-3" asp-controller="Home" asp-action="Index">Voltar à Página Inicial</a>
+                </div>
+            </div>
+        </div>
+    }
 </div>

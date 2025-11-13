@@ -1,15 +1,16 @@
 ﻿using PitsLanches.Context;
 using PitsLanches.Models;
 using PitsLanches.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace PitsLanches.Repositories
 {
     public class PedidoRepository : IPedidoRepository
     {
         private readonly AppDbContext _appDbContext;
-        private readonly AppDbContext _carrinhoCompra;
+        private readonly CarrinhoCompra _carrinhoCompra; 
 
-        public PedidoRepository(AppDbContext appDbContext, AppDbContext carrinhoCompra)
+        public PedidoRepository(AppDbContext appDbContext, CarrinhoCompra carrinhoCompra)
         {
             _appDbContext = appDbContext;
             _carrinhoCompra = carrinhoCompra;
@@ -21,19 +22,24 @@ namespace PitsLanches.Repositories
             _appDbContext.Pedidos.Add(pedido);
             _appDbContext.SaveChanges();
 
-            var carrinhoCompraItens = _carrinhoCompra.CarrinhoCompraItens;
+      
+            var carrinhoCompraItens = _carrinhoCompra.CarrinhoCompraItems;
 
-            foreach (var carrinhoItem in carrinhoCompraItens) 
+            pedido.PedidoItens = new List<PedidoDetalhe>();
+
+            foreach (var carrinhoItem in carrinhoCompraItens)
             {
                 var pedidoDetail = new PedidoDetalhe()
                 {
                     Quantidade = carrinhoItem.Quantidade,
                     LancheId = carrinhoItem.Lanche.LancheId,
                     PedidoId = pedido.PedidoId,
-                    Preco = carrinhoItem.Lanche.Preco
+                    Preco = carrinhoItem.Lanche.Preco,
+                    Lanche = carrinhoItem.Lanche
                 };
-                _appDbContext.PedidoDetalhes.Add(pedidoDetail);
 
+                pedido.PedidoItens.Add(pedidoDetail);
+                _appDbContext.PedidoDetalhes.Add(pedidoDetail);
             }
             _appDbContext.SaveChanges();
         }

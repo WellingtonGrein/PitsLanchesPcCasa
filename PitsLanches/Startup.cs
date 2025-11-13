@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using PitsLanches.Areas.Admin.Servicos;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PitsLanches.Context;
 using PitsLanches.Models;
 using PitsLanches.Repositories;
 using PitsLanches.Repositories.Interfaces;
 using PitsLanches.Services;
+using ReflectionIT.Mvc.Paging;
 
 namespace PitsLanches;
 
@@ -25,10 +27,13 @@ public class Startup
 
         services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
+        services.Configure<ConfigurationImagens>(Configuration.GetSection("ConfigurationPastaImagens"));
+
         services.AddTransient<ILancheRepository, LancheRepository>();
         services.AddTransient<ICategoriaRepository, CategoriaRepository>();
         services.AddTransient<IPedidoRepository, PedidoRepository>();
         services.AddScoped<ISeedUserRoleInitial, SeedUserRoleInitial>();
+        services.AddScoped<RelatorioVendasServices>();
 
         services.AddAuthorization(options =>
         {
@@ -42,6 +47,12 @@ public class Startup
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddScoped(sp => CarrinhoCompra.GetCarrinho(sp));
         services.AddControllersWithViews();
+
+        services.AddPaging(options =>
+        {
+            options.ViewName = "Bootstrap4";
+            options.PageParameterName = "pageindex";
+        });
 
         services.AddMemoryCache();
         services.AddSession();
