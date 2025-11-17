@@ -1,41 +1,64 @@
 ﻿@model IEnumerable<PitsLanches.Models.Categoria>
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Gerenciar Categorias";
 }
 
-<h1>Categorias</h1>
+<div class="admin-page-header">
+    <h1>Categorias</h1>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle-fill me-2"></i> Criar Nova Categoria
+    </a>
+</div>
 
-<p>
-    <a asp-action="Create">Criar Nova Categoria</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CategoriaNome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descricao)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoriaNome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descricao)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CategoriaId">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.CategoriaId">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@item.CategoriaId">Deletar</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="admin-content-card">
+    @if (Model.Any())
+    {
+        <table class="table-admin">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CategoriaNome)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Descricao)
+                    </th>
+                    <th class="text-end">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <strong>@Html.DisplayFor(modelItem => item.CategoriaNome)</strong>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Descricao)
+                        </td>
+                        <td class="text-end">
+                            <div class="btn-group admin-actions">
+                                <a asp-action="Edit" asp-route-id="@item.CategoriaId" class="btn btn-outline-primary" title="Editar">
+                                    <i class="bi bi-pencil-fill"></i>
+                                </a>
+                                <a asp-action="Details" asp-route-id="@item.CategoriaId" class="btn btn-outline-info" title="Detalhes">
+                                    <i class="bi bi-search"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.CategoriaId" class="btn btn-outline-danger" title="Deletar">
+                                    <i class="bi bi-trash-fill"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="admin-empty-state">
+            <i class="bi bi-folder-x"></i>
+            <h4>Nenhuma Categoria Encontrada</h4>
+            <p class="text-muted">Clique em "Criar Nova Categoria" para começar a cadastrar.</p>
+        </div>
+    }
+</div>

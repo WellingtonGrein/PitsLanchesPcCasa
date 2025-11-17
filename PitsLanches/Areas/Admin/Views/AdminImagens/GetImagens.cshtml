@@ -1,35 +1,51 @@
 ﻿@using LanchesMac.Models
 @model FileManagerModel
 @{
-    ViewBag.Title = "Arquivos";
+    ViewData["Title"] = "Galeria de Imagens";
 }
-@if (Model.Files != null)
-{
-    <h3>Imagens:</h3>
-    <hr />
-    var caminho = Model.PathImagesProduto;
-    <div class="row">
-        @foreach (FileInfo file in Model.Files)
-        {
-            <div class="column">
-                <img src="~/@caminho/@file.Name" width="125" height="125" title="@file.Name" asp-append-version="true">
-                <div style="padding:10px;text-align:left">
-                    <a href="@Url.Action("Deletefile", "AdminImagens", new { fname = file.Name })">Deletar</a>
-                </div>
-            </div>
-        }
-    </div>
-}
-@if (ViewData["Erro"] != null)
-{
-    <img src="~/images/erro1.png" width="150" height="150" />
-    <h4>@ViewData["Erro"]</h4>
-}
-<div class="clearfix"></div>
-<hr />
-<div>
-    <span>Para ver o nome do arquivo passa o mouse na imagem</span>
+
+<div class="admin-page-header">
+    <h1>Galeria de Imagens</h1>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left-circle me-2"></i> Voltar
+    </a>
 </div>
-<div class="form-group">
-    <a class="btn btn-outline-info" asp-controller="AdminImagens" asp-action="Index">Retornar</a>
+
+<div class="admin-content-card">
+    @if (Model.Files != null && Model.Files.Any())
+    {
+        var caminho = Model.PathImagesProduto;
+        <div class="admin-gallery-container">
+            @foreach (FileInfo file in Model.Files)
+            {
+                <div class="gallery-card">
+                    <img src="~/@caminho/@file.Name" class="gallery-card-image" asp-append-version="true">
+                    <div class="gallery-card-footer">
+                        <p class="gallery-card-name" title="@file.Name">@file.Name</p>
+                        <div class="d-grid">
+                            <a href="@Url.Action("Deletefile", "AdminImagens", new { fname = file.Name })" class="btn btn-outline-danger btn-sm">
+                                <i class="bi bi-trash-fill me-1"></i> Deletar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="admin-empty-state">
+            <i class="bi bi-folder-x"></i>
+            <h4>Nenhuma Imagem Encontrada</h4>
+            <p class="text-muted">A pasta de imagens está vazia. Envie novos arquivos para visualizá-los aqui.</p>
+        </div>
+    }
+
+    @if (ViewData["Erro"] != null)
+    {
+        <div class="alert alert-danger mt-4">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            @ViewData["Erro"]
+        </div>
+    }
 </div>

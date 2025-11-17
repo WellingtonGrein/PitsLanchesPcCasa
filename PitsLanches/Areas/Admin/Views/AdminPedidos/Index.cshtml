@@ -1,107 +1,76 @@
 ﻿@model ReflectionIT.Mvc.Paging.PagingList<PitsLanches.Models.Pedido>
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Gerenciar Pedidos";
 }
 
-<h3>Pedidos</h3>
-
-<form method="get" class="form-inline">
-
-    <input name="filter" class="form-control" placeholder="filtro"
-           value="@Model.RouteValue["Filter"]" />
-
-    <button type="submit" class="btn btn-info">Procurar</button>
-</form>
-
-Total de Pedidos : @Model.TotalRecordCount
-<div>
-    <vc:pager paging-list="@Model"></vc:pager>
+<div class="admin-page-header">
+    <h1>Pedidos</h1>
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Sobrenome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Endereco1)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Endereco2)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cep)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estado)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cidade)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Telefone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PedidoEnviado)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PedidoEntregueEm)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Sobrenome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Endereco1)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Endereco2)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Cep)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Estado)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Cidade)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Telefone)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PedidoEnviado)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PedidoEntregueEm)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.PedidoId">Editar</a> |
-                    <a asp-action="Details" asp-route-id="@item.PedidoId">Detalhes</a> |
-                    <a asp-action="Delete" asp-route-id="@item.PedidoId">Deletar</a> |
-                    <a asp-action="PedidoLanches" asp-route-id="@item.PedidoId">Ver Itens</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="admin-content-card">
+    <div class="admin-toolbar">
+        <form method="get" class="form-inline">
+            <input name="filter" class="form-control" placeholder="Filtrar por nome..." value="@Model.RouteValue["Filter"]" />
+            <button type="submit" class="btn btn-outline-secondary">
+                <i class="bi bi-search"></i> Procurar
+            </button>
+        </form>
+        <span class="text-muted">Total de Pedidos: <strong>@Model.TotalRecordCount</strong></span>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="pagination-container">
+            <vc:pager paging-list="@Model"></vc:pager>
+        </div>
+
+        <table class="table-admin">
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Data do Pedido</th>
+                    <th>Data da Entrega</th>
+                    <th>Telefone</th>
+                    <th class="text-end">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><strong>@Html.DisplayFor(modelItem => item.Nome) @Html.DisplayFor(modelItem => item.Sobrenome)</strong></td>
+                        <td>@item.PedidoEnviado.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>
+                            @(item.PedidoEntregueEm?.ToString("dd/MM/yyyy HH:mm") ?? "Pendente")
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.Telefone)</td>
+                        <td class="text-end">
+                            <div class="btn-group admin-actions">
+                                <a asp-action="PedidoLanches" asp-route-id="@item.PedidoId" class="btn btn-outline-success" title="Ver Itens do Pedido">
+                                    <i class="bi bi-receipt-cutoff"></i>
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@item.PedidoId" class="btn btn-outline-primary" title="Editar">
+                                    <i class="bi bi-pencil-fill"></i>
+                                </a>
+                                <a asp-action="Details" asp-route-id="@item.PedidoId" class="btn btn-outline-info" title="Detalhes">
+                                    <i class="bi bi-search"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.PedidoId" class="btn btn-outline-danger" title="Deletar">
+                                    <i class="bi bi-trash-fill"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="admin-empty-state">
+            <i class="bi bi-cart-x"></i>
+            <h4>Nenhum Pedido Encontrado</h4>
+            <p class="text-muted">Ainda não há pedidos cadastrados ou nenhum corresponde à sua busca.</p>
+        </div>
+    }
+</div>

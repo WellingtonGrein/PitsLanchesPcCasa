@@ -1,84 +1,71 @@
 ﻿@model PitsLanches.Models.Pedido
-
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes do Pedido";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Pedido</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nome)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nome)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Sobrenome)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Sobrenome)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Endereco1)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Endereco1)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Endereco2)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Endereco2)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Cep)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cep)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Estado)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Estado)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Cidade)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cidade)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Telefone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Telefone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PedidoEnviado)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PedidoEnviado)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PedidoEntregueEm)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PedidoEntregueEm)
-        </dd>
-    </dl>
+<div class="admin-page-header">
+    <h1>Detalhes do Pedido #@Model.PedidoId</h1>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left-circle me-2"></i> Voltar para a Lista
+    </a>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.PedidoId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="admin-content-card">
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Informações do Cliente</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-4">Nome</dt>
+                <dd class="col-sm-8">@Model.Nome @Model.Sobrenome</dd>
+
+                <dt class="col-sm-4">Email</dt>
+                <dd class="col-sm-8">@Model.Email</dd>
+
+                <dt class="col-sm-4">Telefone</dt>
+                <dd class="col-sm-8">@Model.Telefone</dd>
+            </dl>
+        </div>
+        <div class="col-md-6">
+            <h4>Datas e Status</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-4">Data do Pedido</dt>
+                <dd class="col-sm-8">@Model.PedidoEnviado.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                <dt class="col-sm-4">Data da Entrega</dt>
+                <dd class="col-sm-8">@(Model.PedidoEntregueEm?.ToString("dd/MM/yyyy HH:mm") ?? "Pendente")</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <h4>Endereço de Entrega</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-3">Endereço</dt>
+                <dd class="col-sm-9">@Model.Endereco1</dd>
+
+                <dt class="col-sm-3">Complemento</dt>
+                <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Endereco2) ? "<i>N/A</i>" : Model.Endereco2)</dd>
+
+                <dt class="col-sm-3">Cidade</dt>
+                <dd class="col-sm-9">@Model.Cidade</dd>
+
+                <dt class="col-sm-3">Estado</dt>
+                <dd class="col-sm-9">@Model.Estado</dd>
+
+                <dt class="col-sm-3">CEP</dt>
+                <dd class="col-sm-9">@Model.Cep</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="admin-form-actions">
+        <a asp-action="Edit" asp-route-id="@Model?.PedidoId" class="btn btn-primary">
+            <i class="bi bi-pencil-fill me-2"></i> Editar Pedido
+        </a>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </div>
 </div>

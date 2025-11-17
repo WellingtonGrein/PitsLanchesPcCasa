@@ -1,43 +1,46 @@
 ﻿@model PitsLanches.ViewModels.PedidoLancheViewModel
-
 @{
-    ViewData["Title"] = "PedidoLanches";
-    decimal totalPedido = 0;
+    ViewData["Title"] = "Itens do Pedido";
+    decimal totalPedido = Model.Pedido.PedidoItens.Sum(item => item.Quantidade * item.Lanche.Preco);
 }
 
-<h1>Lanches do Pedido</h1>
-<hr />
+<div class="admin-page-header">
+    <h1>Itens do Pedido #@Model.Pedido.PedidoId</h1>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left-circle me-2"></i> Voltar para Pedidos
+    </a>
+</div>
 
-<h3>Pedido  :  @Html.DisplayFor(model => @Model.Pedido.PedidoId)</h3>
-<h3>Cliente :  @Html.DisplayFor(model => @Model.Pedido.Nome)</h3>
-<h3>Data    :  @Html.DisplayFor(model => @Model.Pedido.PedidoEnviado)</h3>
-<h3>Entrega :  @Html.DisplayFor(model => @Model.Pedido.PedidoEntregueEm)</h3>
+<div class="admin-content-card">
+    <div class="admin-pedido-summary">
+        <dl class="row mb-0">
+            <dt class="col-sm-2">Cliente:</dt>
+            <dd class="col-sm-4">@Model.Pedido.Nome</dd>
+            <dt class="col-sm-2">Data do Pedido:</dt>
+            <dd class="col-sm-4">@Model.Pedido.PedidoEnviado.ToString("g")</dd>
+            <dt class="col-sm-2">Data da Entrega:</dt>
+            <dd class="col-sm-4">@(Model.Pedido.PedidoEntregueEm?.ToString("g") ?? "Pendente")</dd>
+        </dl>
+    </div>
 
-<table class="table">
-    @foreach (var item in @Model.Pedido.PedidoItens)
+    <h4>Itens</h4>
+    <hr />
+
+    @foreach (var item in Model.Pedido.PedidoItens)
     {
-        totalPedido += (@item.Lanche.Preco * @item.Quantidade);
-        <tr>
-            <td align="right">
-                <h3>@Html.DisplayFor(modelItem => item.Lanche.Nome)</h3>
-            </td>
-            <td align="right">
-                <img src="@item.Lanche.ImagemURL" class="img-fluid" height="100" width="100">
-            </td>
-            <td align="right">
-                <h3>@string.Format("{0:C}", item.Lanche.Preco)</h3>
-            </td>
-            <td align="right">
-                <h3>(@Html.DisplayFor(modelItem => item.Quantidade))</h3>
-            </td>
-        </tr>
+        <div class="admin-pedido-item">
+            <img src="@item.Lanche.ImagemURL" alt="@item.Lanche.Nome" />
+            <div class="info">
+                <strong>@item.Lanche.Nome</strong>
+                <span class="text-muted">@item.Quantidade x @item.Lanche.Preco.ToString("c")</span>
+            </div>
+            <div class="preco-final">
+                @((item.Quantidade * item.Lanche.Preco).ToString("c"))
+            </div>
+        </div>
     }
-    <tr>
-        <td colspan="2">&nbsp;</td>
-        <td align="right">
-            <h3>Total do Pedido : @string.Format("{0:C}", @totalPedido)</h3>
-        </td>
-    </tr>
-</table>
-<a asp-action="Index" class="btn btn-outline-info">Retornar</a>
 
+    <div class="admin-pedido-total">
+        Total do Pedido: <span>@totalPedido.ToString("C2")</span>
+    </div>
+</div>

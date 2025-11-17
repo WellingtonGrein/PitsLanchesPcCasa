@@ -1,72 +1,68 @@
 ﻿@model PitsLanches.Models.Lanche
-
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes do Lanche";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Lanche</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nome)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nome)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DescricaoCurta)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DescricaoCurta)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DescricaoDetalhada)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DescricaoDetalhada)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Preco)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Preco)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImagemURL)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImagemURL)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImagemThumvnailUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImagemThumvnailUrl)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsLanchePreferido)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsLanchePreferido)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EmEstoque)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EmEstoque)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Categoria)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Categoria.CategoriaNome)
-        </dd>
-    </dl>
+<div class="admin-page-header">
+    <h1>Detalhes do Lanche</h1>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left-circle me-2"></i> Voltar para a Lista
+    </a>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.LancheId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="admin-content-card">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="@Model.ImagemURL" class="admin-image-preview" alt="Imagem do Lanche" />
+        </div>
+        <div class="col-md-7">
+            <dl class="row">
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Nome)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Nome)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Preco)</dt>
+                <dd class="col-sm-8">@Model.Preco.ToString("c")</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Categoria)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Categoria.CategoriaNome)</dd>
+
+                <dt class="col-sm-4">Preferido</dt>
+                <dd class="col-sm-8">
+                    @if (Model.IsLanchePreferido)
+                    {
+                        <span class="badge-status active">Sim</span>
+                    }
+                    else
+                    {
+                        <span class="badge-status inactive">Não</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-4">Em Estoque</dt>
+                <dd class="col-sm-8">
+                    @if (Model.EmEstoque)
+                    {
+                        <span class="badge-status active">Sim</span>
+                    }
+                    else
+                    {
+                        <span class="badge-status inactive">Não</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.DescricaoCurta)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.DescricaoCurta)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.DescricaoDetalhada)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.DescricaoDetalhada)</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="admin-form-actions">
+        <a asp-action="Edit" asp-route-id="@Model?.LancheId" class="btn btn-primary">
+            <i class="bi bi-pencil-fill me-2"></i> Editar Lanche
+        </a>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </div>
 </div>

@@ -1,21 +1,39 @@
 ﻿@model Lanche
 
-<div class="container">
-    <div class="row">
-        <div class="card">
-            <div class="text-center">
-                <img src="@Model.ImagemURL" class="img-fluid" alt="" />
-            </div>
-            <div class="card-block">
-                <h2 class="card-title">@Model.Nome</h2>
-                <p class="card-text"><h5>@Model.DescricaoDetalhada</h5></p>
-                <p class="btn btn-group aling-content-lg-end">
-                    <a asp-controller="Lanche" asp-action="List"
-                       class="btn btn-outline-info">Ver Todos os Laches</a>
+<div class="container my-5">
 
-                    <a class="btn btn-primary" id="cartButton" asp-controller="CarrinhoCompra" asp-action="AdicionarItemNoCarrinhoCompra"
-                       asp-route-lancheId="@Model.LancheId">Adicionar @Model.Nome ao Carrinho</a>
-                </p>
+    <div class="row breadcrumb-nav">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="Lanche" asp-action="List">Lanches</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">@Model.Nome</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <div class="detalhe-lanche-imagem">
+                <img src="@Model.ImagemURL" class="img-fluid" alt="@Model.Nome" />
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <h1 class="detalhe-lanche-nome">@Model.Nome</h1>
+            <p class="detalhe-lanche-preco">@Model.Preco.ToString("c")</p>
+            <p class="detalhe-lanche-descricao">@Model.DescricaoDetalhada</p>
+
+            <hr class="my-4">
+
+            <div class="d-grid gap-2 d-md-flex">
+                <a class="btn btn-primary btn-lg flex-grow-1" asp-controller="CarrinhoCompra" asp-action="AdicionarItemNoCarrinhoCompra" asp-route-lancheId="@Model.LancheId">
+                    <i class="bi bi-cart-plus-fill me-2"></i> Adicionar ao Carrinho
+                </a>
+                <a asp-controller="Lanche" asp-action="List" class="btn btn-outline-secondary btn-lg">
+                    Ver Outros Lanches
+                </a>
             </div>
         </div>
     </div>

@@ -1,26 +1,33 @@
-﻿<div class="row">
-    <div class="col-md-6">
-        <form class="form-horizontal" asp-action="RelatorioVendasSimples">
-            <fieldset>
-                <legend><b>Relatório de Pedidos por Período</b></legend>
-                <div class="form-group">
-                    <label for="minDate" class="col-lg-6 control-label">Data Inicial</label>
-                    <div class="col-lg-10">
-                        <input type="date" name="minDate" class="form-control" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="maxDate" class="col-lg-6 control-label">Data Final</label>
-                    <div class="col-lg-10">
-                        <input type="date" name="maxDate" class="form-control" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-lg-10 col-lg-offset-2">
-                        <button type="submit" class="btn btn-primary">Enviar</button>
-                    </div>
-                </div>
-            </fieldset>
-        </form>
-    </div>
+﻿@{
+    ViewData["Title"] = "Relatório de Vendas";
+}
+
+<div class="admin-page-header">
+    <h1>Relatório de Vendas</h1>
+</div>
+
+<div class="admin-content-card">
+    <form class="admin-form" asp-action="RelatorioVendasSimples">
+
+        <h4>Filtrar por Período</h4>
+        <p class="text-muted">Selecione as datas de início e fim para gerar o relatório de vendas.</p>
+        <hr />
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="minDate" class="form-label">Data Inicial</label>
+                <input type="date" name="minDate" class="form-control" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="maxDate" class="form-label">Data Final</label>
+                <input type="date" name="maxDate" class="form-control" />
+            </div>
+        </div>
+
+        <div class="admin-form-actions">
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-file-earmark-bar-graph-fill me-2"></i> Gerar Relatório
+            </button>
+        </div>
+    </form>
 </div>

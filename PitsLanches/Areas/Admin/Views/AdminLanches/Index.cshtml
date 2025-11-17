@@ -1,82 +1,88 @@
 ﻿@model ReflectionIT.Mvc.Paging.PagingList<PitsLanches.Models.Lanche>
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Gerenciar Lanches";
 }
-<h3>Lanches</h3>
 
-<form method="get" class="form-inline">
-
-    <input name="filter" class="form-control" placeholder="filtro"
-           value="@Model.RouteValue["Filter"]" />
-
-    <button type="submit" class="btn btn-info"> Procurar</button>
-</form>
-
-Total de Lanches : @Model.TotalRecordCount
-<div>
-    <vc:pager paging-list="@Model"></vc:pager>
+<div class="admin-page-header">
+    <h1>Lanches</h1>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle-fill me-2"></i> Criar Novo Lanche
+    </a>
 </div>
 
-<p>
-    <a asp-action="Create">Criar Lanche</a>
-</p>
-<div class="row">
-    <div class="col-md-10">
-        <table class="table">
+<div class="admin-content-card">
+    <div class="admin-toolbar">
+        <form method="get" class="form-inline">
+            <input name="filter" class="form-control" placeholder="Filtrar lanches..." value="@Model.RouteValue["Filter"]" />
+            <button type="submit" class="btn btn-outline-secondary">
+                <i class="bi bi-search"></i> Procurar
+            </button>
+        </form>
+        <span class="text-muted">Total de Lanches: <strong>@Model.TotalRecordCount</strong></span>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="pagination-container">
+            <vc:pager paging-list="@Model"></vc:pager>
+        </div>
+
+        <table class="table-admin">
             <thead>
                 <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Nome)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.DescricaoCurta)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Preco)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsLanchePreferido)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.EmEstoque)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Categoria)
-                    </th>
-                    <th></th>
+                    <th>@Html.DisplayNameFor(model => model.Nome)</th>
+                    <th>@Html.DisplayNameFor(model => model.Preco)</th>
+                    <th>Preferido</th>
+                    <th>Estoque</th>
+                    <th>@Html.DisplayNameFor(model => model.Categoria)</th>
+                    <th class="text-end">Ações</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
+                        <td><strong>@Html.DisplayFor(modelItem => item.Nome)</strong></td>
+                        <td>@item.Preco.ToString("c")</td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Nome)
+                            @if (item.IsLanchePreferido)
+                            {
+                                <span class="badge-status active">Sim</span>
+                            }
+                            else
+                            {
+                                <span class="badge-status inactive">Não</span>
+                            }
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.DescricaoCurta)
+                            @if (item.EmEstoque)
+                            {
+                                <span class="badge-status active">Sim</span>
+                            }
+                            else
+                            {
+                                <span class="badge-status inactive">Não</span>
+                            }
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Preco)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IsLanchePreferido)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EmEstoque)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Categoria.CategoriaNome)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.LancheId">Editar</a> |
-                            <a asp-action="Details" asp-route-id="@item.LancheId">Detalhes</a> |
-                            <a asp-action="Delete" asp-route-id="@item.LancheId">Deletar</a>
+                        <td>@Html.DisplayFor(modelItem => item.Categoria.CategoriaNome)</td>
+                        <td class="text-end">
+                            <div class="btn-group admin-actions">
+                                <a asp-action="Edit" asp-route-id="@item.LancheId" class="btn btn-outline-primary" title="Editar"><i class="bi bi-pencil-fill"></i></a>
+                                <a asp-action="Details" asp-route-id="@item.LancheId" class="btn btn-outline-info" title="Detalhes"><i class="bi bi-search"></i></a>
+                                <a asp-action="Delete" asp-route-id="@item.LancheId" class="btn btn-outline-danger" title="Deletar"><i class="bi bi-trash-fill"></i></a>
+                            </div>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
-    </div>
+    }
+    else
+    {
+        <div class="admin-empty-state">
+            <i class="bi bi-box-seam"></i>
+            <h4>Nenhum Lanche Encontrado</h4>
+            <p class="text-muted">Clique em "Criar Novo Lanche" para começar a cadastrar ou ajuste seu termo de busca.</p>
+        </div>
+    }
 </div>

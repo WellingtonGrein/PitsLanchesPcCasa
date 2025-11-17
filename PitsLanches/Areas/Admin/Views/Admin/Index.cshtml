@@ -1,10 +1,68 @@
-﻿<br />
-<img src="~/images/adminarea.jpg" alt="Àrea de Administração" class="marginTop1" />
-<div class="container">
-    <div class="jumbotron">
-        <p>
-            <h2>Esta é a área do Administrador</h2>
-        </p>
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="admin-welcome-header">
+    <div>
+        <h1>Bem-vindo, @User.Identity.Name!</h1>
+        <p class="lead">Este é o seu centro de comando. Gerencie produtos, acompanhe pedidos e veja o desempenho do seu negócio.</p>
     </div>
-    <a asp-area="" asp-controller="Home" asp-action="Index">Volta a Home Page</a>
+    <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+        <i class="bi bi-box-arrow-up-right me-2"></i> Ir para a Loja
+    </a>
+</div>
+
+<div class="admin-summary-container">
+    <div class="summary-stat-card">
+        <div class="stat-icon pedidos"><i class="bi bi-journal-text"></i></div>
+        <div class="stat-info">
+            <div class="stat-title">Total de Pedidos</div>
+            <div class="stat-value">@ViewBag.TotalPedidos</div>
+        </div>
+    </div>
+    <div class="summary-stat-card">
+        <div class="stat-icon lanches"><i class="bi bi-hdd-stack-fill"></i></div>
+        <div class="stat-info">
+            <div class="stat-title">Total de Lanches</div>
+            <div class="stat-value">@ViewBag.TotalLanches</div>
+        </div>
+    </div>
+    <div class="summary-stat-card">
+        <div class="stat-icon valor"><i class="bi bi-cash-coin"></i></div>
+        <div class="stat-info">
+            <div class="stat-title">Vendas Totais</div>
+            <div class="stat-value">@ViewBag.VendasTotais.ToString("c")</div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-5">
+    <h2 class="admin-section-title">Ações Rápidas</h2>
+    <div class="admin-action-grid">
+        <a asp-action="Index" asp-controller="AdminLanches" class="admin-action-card">
+            <span class="action-card-icon"><i class="bi bi-list"></i></span>
+            <h5 class="action-card-title">Gerenciar Lanches</h5>
+            <p class="action-card-text">Adicione, edite e remova os produtos do seu cardápio.</p>
+        </a>
+        <a asp-action="Index" asp-controller="AdminCategorias" class="admin-action-card">
+            <span class="action-card-icon"><i class="bi bi-tags-fill"></i></span>
+            <h5 class="action-card-title">Gerenciar Categorias</h5>
+            <p class="action-card-text">Organize seus produtos em categorias como lanches, bebidas, etc.</p>
+        </a>
+        <a asp-action="Index" asp-controller="AdminPedidos" class="admin-action-card">
+            <span class="action-card-icon"><i class="bi bi-receipt-cutoff"></i></span>
+            <h5 class="action-card-title">Gerenciar Pedidos</h5>
+            <p class="action-card-text">Visualize e acompanhe todos os pedidos realizados pelos clientes.</p>
+        </a>
+        <a asp-action="Index" asp-controller="AdminRelatorioVendas" class="admin-action-card">
+            <span class="action-card-icon"><i class="bi bi-bar-chart-line-fill"></i></span>
+            <h5 class="action-card-title">Relatório de Vendas</h5>
+            <p class="action-card-text">Gere relatórios para analisar o desempenho das suas vendas.</p>
+        </a>
+        <a asp-action="Index" asp-controller="AdminImagens" class="admin-action-card">
+            <span class="action-card-icon"><i class="bi bi-images"></i></span>
+            <h5 class="action-card-title">Gerenciar Imagens</h5>
+            <p class="action-card-text">Faça o upload e gerencie as imagens dos seus produtos.</p>
+        </a>
+    </div>
 </div>
