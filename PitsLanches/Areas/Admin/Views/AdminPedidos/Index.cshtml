@@ -1,4 +1,5 @@
 ﻿@model ReflectionIT.Mvc.Paging.PagingList<PitsLanches.Models.Pedido>
+
 @{
     ViewData["Title"] = "Gerenciar Pedidos";
 }
@@ -29,9 +30,9 @@
                 <tr>
                     <th>Cliente</th>
                     <th>Data do Pedido</th>
-                    <th>Data da Entrega</th>
                     <th>Telefone</th>
-                    <th class="text-end">Ações</th>
+                    <th class="text-center" style="min-width: 160px;">Situação</th>
+                    <th class="text-end">Gerenciar</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,10 +41,28 @@
                     <tr>
                         <td><strong>@Html.DisplayFor(modelItem => item.Nome) @Html.DisplayFor(modelItem => item.Sobrenome)</strong></td>
                         <td>@item.PedidoEnviado.ToString("dd/MM/yyyy HH:mm")</td>
-                        <td>
-                            @(item.PedidoEntregueEm?.ToString("dd/MM/yyyy HH:mm") ?? "Pendente")
-                        </td>
                         <td>@Html.DisplayFor(modelItem => item.Telefone)</td>
+                        <td class="text-center align-middle">
+                            @if (item.PedidoEntregueEm == null)
+                            {
+                                <a asp-action="ConcluirEntrega" asp-route-id="@item.PedidoId"
+                                   class="btn btn-outline-success btn-sm rounded-pill px-3"
+                                   title="Confirmar que foi entregue">
+                                    <i class="bi bi-truck me-1"></i> Confirmar Entrega
+                                </a>
+                            }
+                            else
+                            {
+                                <div class="d-flex flex-column align-items-center justify-content-center">
+                                    <span class="text-success fw-bold small">
+                                        <i class="bi bi-check-circle-fill me-1"></i> Entregue
+                                    </span>
+                                    <span class="text-muted" style="font-size: 0.75rem;">
+                                        @item.PedidoEntregueEm?.ToString("dd/MM/yyyy HH:mm")
+                                    </span>
+                                </div>
+                            }
+                        </td>
                         <td class="text-end">
                             <div class="btn-group admin-actions">
                                 <a asp-action="PedidoLanches" asp-route-id="@item.PedidoId" class="btn btn-outline-success" title="Ver Itens do Pedido">

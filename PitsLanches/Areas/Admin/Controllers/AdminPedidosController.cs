@@ -55,7 +55,6 @@ namespace PitsLanches.Areas.Admin.Controllers
             return View(model);
         }
 
-        // GET: Admin/AdminPedidos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -73,15 +72,11 @@ namespace PitsLanches.Areas.Admin.Controllers
             return View(pedido);
         }
 
-        // GET: Admin/AdminPedidos/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Admin/AdminPedidos/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PedidoId,Nome,Sobrenome,Endereco1,Endereco2,Cep,Estado,Cidade,Telefone,Email,PedidoEnviado,PedidoEntregueEm")] Pedido pedido)
@@ -95,7 +90,6 @@ namespace PitsLanches.Areas.Admin.Controllers
             return View(pedido);
         }
 
-        // GET: Admin/AdminPedidos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -111,9 +105,6 @@ namespace PitsLanches.Areas.Admin.Controllers
             return View(pedido);
         }
 
-        // POST: Admin/AdminPedidos/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("PedidoId,Nome,Sobrenome,Endereco1,Endereco2,Cep,Estado,Cidade,Telefone,Email,PedidoEnviado,PedidoEntregueEm")] Pedido pedido)
@@ -146,7 +137,6 @@ namespace PitsLanches.Areas.Admin.Controllers
             return View(pedido);
         }
 
-        // GET: Admin/AdminPedidos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -164,7 +154,6 @@ namespace PitsLanches.Areas.Admin.Controllers
             return View(pedido);
         }
 
-        // POST: Admin/AdminPedidos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -178,6 +167,26 @@ namespace PitsLanches.Areas.Admin.Controllers
         private bool PedidoExists(int id)
         {
             return _context.Pedidos.Any(e => e.PedidoId == id);
+        }
+
+        public async Task<IActionResult> ConcluirEntrega(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var pedido = await _context.Pedidos.FindAsync(id);
+
+            if (pedido == null)
+            {
+                return NotFound();
+            }
+            pedido.PedidoEntregueEm = DateTime.Now;
+            _context.Update(pedido);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

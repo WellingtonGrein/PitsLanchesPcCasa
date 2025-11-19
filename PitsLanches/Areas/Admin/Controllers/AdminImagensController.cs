@@ -59,13 +59,10 @@ namespace PitsLanches.Areas.Admin.Controllers
                     }
                 }
             }
-            //monta a ViewData que será exibida na view como resultado do envio 
             ViewData["Resultado"] = $"{files.Count} arquivos foram enviados ao servidor, " +
              $"com tamanho total de : {size} bytes";
 
             ViewBag.Arquivos = filePathsName;
-
-            //retorna a viewdata
             return View(ViewData);
         }
         public IActionResult GetImagens()
