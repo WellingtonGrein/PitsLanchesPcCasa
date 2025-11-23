@@ -7,6 +7,7 @@ using PitsLanches.Repositories;
 using PitsLanches.Repositories.Interfaces;
 using PitsLanches.Services;
 using ReflectionIT.Mvc.Paging;
+using PitsLanches.Areas.Admin.Services;
 
 namespace PitsLanches;
 
@@ -34,6 +35,7 @@ public class Startup
         services.AddTransient<IPedidoRepository, PedidoRepository>();
         services.AddScoped<ISeedUserRoleInitial, SeedUserRoleInitial>();
         services.AddScoped<RelatorioVendasServices>();
+        services.AddScoped<GraficoVendaService>();
 
         services.AddAuthorization(options =>
         {

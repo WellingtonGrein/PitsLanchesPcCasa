@@ -19,22 +19,46 @@
         </div>
         <ul class="sidebar-nav">
             <li class="nav-item">
-                <a class="nav-link" asp-area="Admin" asp-controller="Admin" asp-action="Index"><i class="bi bi-house-door-fill"></i> Dashboard</a>
+                <a class="nav-link" asp-area="Admin" asp-controller="Admin" asp-action="Index">
+                    <i class="bi bi-house-door-fill"></i> Dashboard
+                </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-area="Admin" asp-controller="AdminLanches" asp-action="Index"><i class="bi bi-list"></i> Lanches</a>
+                <a class="nav-link" asp-area="Admin" asp-controller="AdminLanches" asp-action="Index">
+                    <i class="bi bi-cup-hot-fill"></i> Lanches
+                </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-area="Admin" asp-controller="AdminCategorias" asp-action="Index"><i class="bi bi-tags-fill"></i> Categorias</a>
+                <a class="nav-link" asp-area="Admin" asp-controller="AdminCategorias" asp-action="Index">
+                    <i class="bi bi-tags-fill"></i> Categorias
+                </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-area="Admin" asp-controller="AdminPedidos" asp-action="Index"><i class="bi bi-receipt-cutoff"></i> Pedidos</a>
+                <a class="nav-link" asp-area="Admin" asp-controller="AdminPedidos" asp-action="Index">
+                    <i class="bi bi-receipt-cutoff"></i> Pedidos
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" asp-area="Admin" asp-controller="AdminRelatorioVendas" asp-action="Index">
+                    <i class="bi bi-file-earmark-spreadsheet-fill"></i> Relatório
+                </a>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-bar-chart-line-fill"></i> Gráficos
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark border-0 shadow" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="AdminGrafico" asp-action="Index">Vendas Anual</a></li>
+                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="AdminGrafico" asp-action="VendasMensal" asp-route-dias="30">Vendas Mensal</a></li>
+                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="AdminGrafico" asp-action="VendasSemanal" asp-route-dias="7">Vendas Semanal</a></li>
+                </ul>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-area="Admin" asp-controller="AdminRelatorioVendas" asp-action="Index"><i class="bi bi-bar-chart-line-fill"></i> Relatório</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" asp-area="Admin" asp-controller="AdminImagens" asp-action="Index"><i class="bi bi-images"></i> Imagens</a>
+                <a class="nav-link" asp-area="Admin" asp-controller="AdminImagens" asp-action="Index">
+                    <i class="bi bi-images"></i> Imagens
+                </a>
             </li>
         </ul>
         <div class="sidebar-footer">
